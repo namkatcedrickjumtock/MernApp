@@ -1,29 +1,32 @@
-import express from "express";
-import "dotenv/config";
-import { routes } from "./routes/workoutsRoutes.js";
-import morgan from "morgan";
-import mongoose from "mongoose";
-import { workOutModel } from "./Models/workOutSchema.js";
+require('dotenv').config()
 
+const express = require('express')
+const mongoose = require('mongoose')
+const workoutRoutes = require('./routes/workouts')
 
+// express app
+const app = express()
 
-// initializing the express app
-const app = express();
+// middleware
+app.use(express.json())
 
-// parsing url req to get acces to the body using a middleware in express
-app.use(express.json());
+app.use((req, res, next) => {
+  console.log(req.path, req.method)
+  next()
+})
 
-// connecting to database
-mongoose
-  .connect(process.env.MONGO_URI, { useNewUrlParser: true })
+// routes
+app.use('/api/workouts', workoutRoutes)
+
+// connect to db
+mongoose.connect(process.env.MONGO_URI)
   .then(() => {
+    console.log('connected to database')
+    // listen to port
     app.listen(process.env.PORT, () => {
-      console.log(`connected to Database & port:`, process.env.PORT);
-    });
+      console.log('listening for requests on port', process.env.PORT)
+    })
   })
   .catch((err) => {
-    console.log(err);
-  });
-
-// using work out routes with scope
-app.use("/api/workouts", routes);
+    console.log(err)
+  }) 
