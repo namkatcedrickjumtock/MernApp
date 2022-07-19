@@ -6,6 +6,7 @@ const Navbar = () => {
     <header>
       <div className="container">
         <Link to="/">
+          <img src="/icon/workLogo.png" alt="logo"  width={90}/>
           <h1>Workout Buddy</h1>
         </Link>
       </div>
