@@ -22,13 +22,18 @@ app.use(morgan('tiny'))
 // routes
 app.use('/api/workouts', workoutRoutes)
 
+
+// default port
+
+const PORT = process.env.PORT || 8080
+
 // connect to db
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
     console.log('connected to database')
     // listen to port
-    app.listen(process.env.PORT, () => {
-      console.log('listening for requests on port', process.env.PORT)
+    app.listen(PORT, () => {
+      console.log('listening for requests on port',PORT)
     })
   })
   .catch((err) => {
